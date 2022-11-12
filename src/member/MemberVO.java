@@ -1,4 +1,4 @@
-package home;
+package member;
 
 public class MemberVO {
 	private String id;

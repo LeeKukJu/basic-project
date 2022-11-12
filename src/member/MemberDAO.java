@@ -1,9 +1,10 @@
-package home;
+package member;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
+import common.OracleConnect;
 import oracle.jdbc.driver.OracleDriver;
 
 public class MemberDAO {
@@ -19,11 +20,12 @@ public class MemberDAO {
 		return instance;
 	}
 	
-	//회원가입한 회원 정보 DB에 전달
-	public int insertMember(MemberVO vo) throws Exception {
-		DriverManager.registerDriver(new OracleDriver());
-		Connection connection = DriverManager.getConnection(url, user, pass);
-		Statement statement = connection.createStatement();
+	//회원가입한 회원 정보 -> DB에 전달
+	public int join(MemberVO vo) throws Exception {
+		OracleConnect.jdbcDriver();
+//		DriverManager.registerDriver(new OracleDriver());
+//		Connection connection = DriverManager.getConnection(url, user, pass);
+//		Statement statement = connection.createStatement();
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(" INSERT INTO member (");
@@ -38,9 +40,19 @@ public class MemberDAO {
 		builder.append("     '" + vo.getPhone() + "'");
 		builder.append(" )");
 		String sql = builder.toString();
-		int update = statement.executeUpdate(sql);
-		statement.close();
-		connection.close();
+		int update = OracleConnect.statement.executeUpdate(sql);
+		OracleConnect.statement.close();
+		OracleConnect.connection.close();
 		return update;
 	}
+	
+	// DB -> 회원 정보 하나 전달
+	public MemberVO getMember(String id, String password) throws Exception {
+		DriverManager.registerDriver(new OracleDriver());
+		Connection connection = DriverManager.getConnection(url, user, pass);
+		Statement statement = connection.createStatement();
+		//쿼리 작성 : 아이디와 회
+		return null;
+	}
+	
 }
